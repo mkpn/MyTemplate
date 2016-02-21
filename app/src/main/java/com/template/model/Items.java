@@ -14,8 +14,4 @@ public class Items extends BaseObservable {
     public Items(ObservableArrayList<Item> items) {
         this.items = new ObservableArrayList<>();
     }
-
-    public void addItem(String firstName, String lastName){
-        this.items.add(new Item(firstName, lastName));
-    }
 }

@@ -33,10 +33,6 @@ public class ItemService {
 
     private static final Random RANDOM = new Random();
 
-    public void getItem(){
-        mItem = new Item(mStrings[RANDOM.nextInt(mStrings.length)], mStrings[RANDOM.nextInt(mStrings.length)]) ;
-    }
-
     public String getDescription(){
         return "Hello World";
     }

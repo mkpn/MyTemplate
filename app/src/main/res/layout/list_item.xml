@@ -41,17 +41,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
-            android:text="@{item.firstName}"
+            android:text="@{item.string}"
             android:textAppearance="?attr/textAppearanceListItem" />
 
-
         <TextView
-            android:id="@android:id/text2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
-            android:text="@{item.lastName}"
+            android:text="aaaaaaaaaaa"
             android:textAppearance="?attr/textAppearanceListItem" />
-
     </LinearLayout>
 </layout>

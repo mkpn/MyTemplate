@@ -30,7 +30,9 @@ import android.view.ViewGroup;
 
 import com.template.BR;
 import com.template.ItemDetailActivity;
+import com.template.ListBindingActivity;
 import com.template.R;
+import com.template.SimpleBindingActivity;
 import com.template.databinding.FragmentListBinding;
 import com.template.databinding.ListItemBinding;
 import com.template.model.Cheeses;
@@ -58,7 +60,8 @@ public class MutableListFragment extends Fragment {
     private void setupRecyclerView(RecyclerView recyclerView) {
         ArrayList<Item> itemList = new ArrayList<>();
         for (String sCheeseString : Cheeses.sCheeseStrings) {
-            Item item = new Item(sCheeseString, "lastname");
+            Item item = new Item();
+            item.string.set(sCheeseString);
             itemList.add(item);
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
@@ -75,7 +78,7 @@ public class MutableListFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(final ItemViewHolder holder, int position) {
+        public void onBindViewHolder(final ItemViewHolder holder, final int position) {
             Item item = mItemList.get(position);
             holder.getBinding().setVariable(BR.item, item);
             holder.getBinding().executePendingBindings();
@@ -83,7 +86,18 @@ public class MutableListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
-                    Intent intent = new Intent(context, ItemDetailActivity.class);
+                    Intent intent;
+                    switch (position) {
+                        case 0:
+                            intent = new Intent(context, SimpleBindingActivity.class);
+                            break;
+                        case 1:
+                            intent = new Intent(context, ListBindingActivity.class);
+                            break;
+                        default:
+                            intent = new Intent(context, ItemDetailActivity.class);
+                            break;
+                    }
                     context.startActivity(intent);
                 }
             });

@@ -13,12 +13,13 @@ import com.template.databinding.ListItemBinding;
 import com.template.model.Item;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by makoto on 2016/02/15.
  */
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
-    private ArrayList<Item> mItemList;
+    private List<Item> mItemList;
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -33,12 +34,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         holder.getBinding().executePendingBindings();
     }
 
-    public ItemAdapter(final ArrayList<Item> itemList) {
+    public ItemAdapter(final List<Item> itemList) {
         mItemList = itemList;
     }
 
     @Override
     public int getItemCount() {
+        Log.d("デバッグ", "size is " + mItemList.size());
         return mItemList.size();
     }
 
