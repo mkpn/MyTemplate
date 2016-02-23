@@ -1,6 +1,9 @@
 package com.template.view.adapter;
 
+import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableArrayList;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,15 +14,13 @@ import com.template.BR;
 import com.template.R;
 import com.template.databinding.ListItemBinding;
 import com.template.model.Item;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.template.model.ObservableItems;
 
 /**
  * Created by makoto on 2016/02/15.
  */
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
-    private List<Item> mItemList;
+public class ObservableItemAdapter extends RecyclerView.Adapter<ObservableItemAdapter.ItemViewHolder> {
+    private ObservableItems observableItemList;
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -29,18 +30,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
-        Item item = mItemList.get(position);
+        Item item = observableItemList.items.get(position);
         holder.getBinding().setVariable(BR.item, item);
         holder.getBinding().executePendingBindings();
     }
 
-    public ItemAdapter(final List<Item> itemList) {
-        mItemList = itemList;
+    public ObservableItemAdapter(final ObservableItems itemList) {
+        observableItemList = itemList;
     }
 
     @Override
     public int getItemCount() {
-        return mItemList.size();
+        Log.d("デバッグ", "adapter item size is " + observableItemList.items.size());
+        return observableItemList.items == null ? 0 : observableItemList.items.size();
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {

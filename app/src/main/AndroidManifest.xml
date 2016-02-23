@@ -38,6 +38,7 @@
         </activity>
         <activity android:name=".SimpleBindingActivity"></activity>
         <activity android:name=".ListBindingActivity"></activity>
+        <activity android:name=".ObservableListBindingActivity"></activity>
     </application>
 
 </manifest>

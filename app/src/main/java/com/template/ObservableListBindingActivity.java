@@ -2,43 +2,45 @@ package com.template;
 
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
+import android.databinding.ObservableArrayList;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
-import com.template.databinding.ActivityListBindingBinding;
+import com.template.databinding.ObservableListBindingActivityBinding;
 import com.template.model.Item;
+import com.template.model.ObservableItems;
 import com.template.view.adapter.ItemAdapter;
+import com.template.view.adapter.ObservableItemAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
+public class ObservableListBindingActivity extends AppCompatActivity {
 
-public class ListBindingActivity extends AppCompatActivity {
-
-    private ActivityListBindingBinding binding;
+    private ObservableListBindingActivityBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_list_binding);
+        binding = DataBindingUtil.setContentView(this, R.layout.observable_list_binding_activity);
 
-        final List<Item> items = new ArrayList<>();
+        final ObservableArrayList<Item> itemList = new ObservableArrayList<>();
         for (int i = 0; i < 10; i++) {
             Item item = new Item();
             item.string.set(String.valueOf(i));
-            items.add(item);
+            itemList.add(item);
         }
 
+        final ObservableItems items = new ObservableItems(itemList);
         binding.setItems(items);
-        //微妙かも
+
         binding.addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Item item = new Item();
                 item.string.set("追加した要素");
-                items.add(item);
+                items.items.add(item);
                 binding.recyclerview.getAdapter().notifyDataSetChanged();
             }
         });
@@ -46,15 +48,8 @@ public class ListBindingActivity extends AppCompatActivity {
         binding.changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                items.get(3).string.set("変化！");
+                items.items.get(3).string.set("変化！");
             }
         });
-    }
-
-    @BindingAdapter("items")
-    public static void setItems(RecyclerView recyclerView, List<Item> items){
-        ItemAdapter adapter = new ItemAdapter(items);
-        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext())); // これ忘れたらダメなんかい！！！！
-        recyclerView.setAdapter(adapter);
     }
 }

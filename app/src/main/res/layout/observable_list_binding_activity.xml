@@ -2,13 +2,10 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="com.template.model.Item" />
-
-        <import type="java.util.List" />
 
         <variable
             name="items"
-            type="List&lt;Item>" />
+            type="com.template.model.ObservableItems" />
 
     </data>
 

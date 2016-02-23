@@ -2,7 +2,6 @@ package com.template.view.adapter;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +11,15 @@ import com.template.R;
 import com.template.databinding.ListItemBinding;
 import com.template.model.Item;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by makoto on 2016/02/15.
  */
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
-    private List<Item> mItemList;
+public class BetterItemAdapter extends RecyclerView.Adapter<BetterItemAdapter.ItemViewHolder> {
+    private ArrayList<Item> mItemList;
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -34,8 +34,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         holder.getBinding().executePendingBindings();
     }
 
-    public ItemAdapter(final List<Item> itemList) {
+    public BetterItemAdapter(final ArrayList<Item> itemList) {
         mItemList = itemList;
+    }
+
+    public void add(Item item){
+        mItemList.add(item);
+        notifyDataSetChanged();
     }
 
     @Override

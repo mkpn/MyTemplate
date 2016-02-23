@@ -174,7 +174,7 @@ public class Cheeses {
 //    };
 
     public static final String[] sCheeseStrings = {
-            "変数入れるだけ", "Listに対して何かやってみる", "adapterのbindやってみる"
+            "クラスをbindするシンプルなサンプル", "ListをbindingしてRecyclerViewにadapterをセットするサンプル", "あうあー"
     };
 
 }

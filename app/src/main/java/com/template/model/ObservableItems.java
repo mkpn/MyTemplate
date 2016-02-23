@@ -7,11 +7,11 @@ import android.databinding.ObservableArrayList;
 /**
  * Created by makoto on 2016/02/15.
  */
-public class Items extends BaseObservable {
+public class ObservableItems extends BaseObservable {
     @Bindable
     public ObservableArrayList<Item> items;
 
-    public Items(ObservableArrayList<Item> items) {
-        this.items = new ObservableArrayList<>();
+    public ObservableItems(ObservableArrayList<Item> items) {
+        this.items = items;
     }
 }

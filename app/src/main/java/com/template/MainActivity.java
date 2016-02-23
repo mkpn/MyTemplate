@@ -25,7 +25,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.template.databinding.ActivityMainBinding;
+import com.template.databinding.MainActivityBinding;
 import com.template.view.fragment.MutableListFragment;
 
 /**
@@ -33,12 +33,12 @@ import com.template.view.fragment.MutableListFragment;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private ActivityMainBinding binding;
+    private MainActivityBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
         setSupportActionBar(binding.toolbar);
 
         final ActionBar ab = getSupportActionBar();
