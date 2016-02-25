@@ -174,7 +174,7 @@ public class Cheeses {
 //    };
 
     public static final String[] sCheeseStrings = {
-            "クラスをbindするシンプルなサンプル", "ListをbindingしてRecyclerViewにadapterをセットするサンプル", "あうあー"
+            "クラスをbindするシンプルなサンプル", "ListをbindingしてRecyclerViewにadapterをセットするサンプル", "ObservableArrayList<String>のBinding"
     };
 
 }
