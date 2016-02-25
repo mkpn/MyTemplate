@@ -2,10 +2,10 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <import type="android.databinding.ObservableArrayList"/>
         <variable
             name="items"
-            type="com.template.model.ObservableItems" />
+            type="ObservableArrayList&lt;String>" />
 
     </data>
 

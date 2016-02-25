@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import com.template.BR;
 import com.template.ItemDetailActivity;
 import com.template.ListBindingActivity;
+import com.template.ObservableListBindingActivity;
 import com.template.R;
 import com.template.SimpleBindingActivity;
 import com.template.databinding.FragmentListBinding;
@@ -93,6 +94,9 @@ public class MutableListFragment extends Fragment {
                             break;
                         case 1:
                             intent = new Intent(context, ListBindingActivity.class);
+                            break;
+                        case 2:
+                            intent = new Intent(context, ObservableListBindingActivity.class);
                             break;
                         default:
                             intent = new Intent(context, ItemDetailActivity.class);
