@@ -34,6 +34,8 @@ import com.template.ListBindingActivity;
 import com.template.ObservableListBindingActivity;
 import com.template.R;
 import com.template.SimpleBindingActivity;
+import com.template.SimpleClickListenerBindingActivity;
+import com.template.VisibilityObservableListBindingActivity;
 import com.template.databinding.FragmentListBinding;
 import com.template.databinding.ListItemBinding;
 import com.template.model.Cheeses;
@@ -93,10 +95,16 @@ public class MutableListFragment extends Fragment {
                             intent = new Intent(context, SimpleBindingActivity.class);
                             break;
                         case 1:
-                            intent = new Intent(context, ListBindingActivity.class);
+                            intent = new Intent(context, SimpleClickListenerBindingActivity.class);
                             break;
                         case 2:
+                            intent = new Intent(context, ListBindingActivity.class);
+                            break;
+                        case 3:
                             intent = new Intent(context, ObservableListBindingActivity.class);
+                            break;
+                        case 4:
+                            intent = new Intent(context, VisibilityObservableListBindingActivity.class);
                             break;
                         default:
                             intent = new Intent(context, ItemDetailActivity.class);
