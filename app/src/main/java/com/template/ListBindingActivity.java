@@ -25,7 +25,7 @@ public class ListBindingActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_list_binding);
 
         final List<Item> items = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1000; i++) {
             Item item = new Item();
             item.string.set(String.valueOf(i));
             items.add(item);

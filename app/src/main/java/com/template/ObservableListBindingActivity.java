@@ -23,7 +23,7 @@ public class ObservableListBindingActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.observable_list_binding_activity);
 
         final ObservableArrayList<String> itemList = new ObservableArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10000; i++) {
             Item item = new Item();
             item.string.set(String.valueOf(i));
             itemList.add(String.valueOf(i));

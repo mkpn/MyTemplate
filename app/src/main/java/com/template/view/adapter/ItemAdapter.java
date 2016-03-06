@@ -2,7 +2,6 @@ package com.template.view.adapter;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import com.template.R;
 import com.template.databinding.ListItemBinding;
 import com.template.model.Item;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,8 +28,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         Item item = mItemList.get(position);
-        holder.getBinding().setVariable(BR.item, item);
-        holder.getBinding().executePendingBindings();
+        holder.getBinding().setItem(item);
     }
 
     public ItemAdapter(final List<Item> itemList) {

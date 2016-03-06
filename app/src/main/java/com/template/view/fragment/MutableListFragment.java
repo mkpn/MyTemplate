@@ -36,6 +36,7 @@ import com.template.R;
 import com.template.SimpleBindingActivity;
 import com.template.SimpleClickListenerBindingActivity;
 import com.template.VisibilityObservableListBindingActivity;
+import com.template.WeatherActivity;
 import com.template.databinding.FragmentListBinding;
 import com.template.databinding.ListItemBinding;
 import com.template.model.Cheeses;
@@ -105,6 +106,9 @@ public class MutableListFragment extends Fragment {
                             break;
                         case 4:
                             intent = new Intent(context, VisibilityObservableListBindingActivity.class);
+                            break;
+                        case 5:
+                            intent = new Intent(context, WeatherActivity.class);
                             break;
                         default:
                             intent = new Intent(context, ItemDetailActivity.class);

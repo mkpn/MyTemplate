@@ -43,7 +43,9 @@ public class Cheeses {
     public static final String[] sCheeseStrings = {
             "クラスをbindするシンプルなサンプル", "ClickListenerもbindするシンプルなサンプル",
             "ListをbindingしてRecyclerViewにadapterをセットするサンプル",
-            "ObservableArrayList<String>のBinding", "データの中身によってViewの見え方を変えるBinding"
+            "ObservableArrayList<String>のBinding",
+            "データの中身によってViewの見え方を変えるBinding",
+            "Weather Activity"
     };
 
 }
