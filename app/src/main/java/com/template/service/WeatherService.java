@@ -7,8 +7,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
 import com.template.api.WeatherApi;
-import com.template.model.PinpointLocations;
-import com.template.model.Weather;
+import com.template.entity.PinpointLocations;
+import com.template.entity.Weather;
 
 import java.io.IOException;
 import java.util.Date;
@@ -22,7 +22,6 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -30,7 +29,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by makoto on 2016/03/04.
  */
-public class NetWorkService {
+public class WeatherService {
     private final OkHttpClient client = new OkHttpClient();
 
     private static final String END_POINT = "http://weather.livedoor.com";
@@ -76,29 +75,6 @@ public class NetWorkService {
         // 天気予報情報を取得する
         //http://weather.livedoor.com/area/forecast/200010
         WeatherApi api = retrofit.create(WeatherApi.class);
-
-        final Observer observer = new Observer<Weather>() {
-            @Override
-            public void onCompleted() {
-                //必要な情報を取り出して画面に表示してください。
-                getWeather();
-                Log.d("デバッグ", "onComplete! weather ");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-            }
-
-            @Override
-            public void onNext(Weather weather) {
-                Log.d("デバッグ", "on?Next weather ");
-                if (weather != null) {
-                    for (PinpointLocations location : weather.getPinpointLocations()) {
-                        Log.d("デバッグ", "name is " + location.getName());
-                    }
-                }
-            }
-        };
 
         api.getWeather("200010")
                 .subscribeOn(Schedulers.newThread())

@@ -20,7 +20,7 @@
 
         <variable
             name="item"
-            type="com.template.model.Item" />
+            type="com.template.entity.Item" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"

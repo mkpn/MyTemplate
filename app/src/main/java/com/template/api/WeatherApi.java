@@ -1,6 +1,6 @@
 package com.template.api;
 
-import com.template.model.Weather;
+import com.template.entity.Weather;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;

@@ -1,8 +1,8 @@
 package com.template.service;
 
 import com.template.R;
-import com.template.model.Cheese;
-import com.template.model.Item;
+import com.template.entity.Cheese;
+import com.template.entity.Item;
 
 import java.util.ArrayList;
 import java.util.Random;

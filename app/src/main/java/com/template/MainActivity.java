@@ -26,7 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.template.databinding.MainActivityBinding;
-import com.template.view.fragment.MutableListFragment;
+import com.template.view.fragment.MainListFragment;
 
 /**
  * TODO
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment, new MutableListFragment())
+                    .add(R.id.fragment, new MainListFragment())
                     .commit();
         }
     }

@@ -22,26 +22,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 
 import com.bumptech.glide.Glide;
-import com.template.databinding.ItemDetailActivityBinding;
+import com.template.databinding.YoutubeSearchActivityBinding;
 import com.template.entity.Cheeses;
+import com.template.service.YouTubeService;
 import com.template.view.viewmodel.ItemDetailViewModel;
 
-public class ItemDetailActivity extends AppCompatActivity {
+public class YouTubeSearchActivity extends AppCompatActivity {
 
-    private ItemDetailActivityBinding mBinding;
+    private YoutubeSearchActivityBinding mBinding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.item_detail_activity);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.youtube_search_activity);
 
         setSupportActionBar(mBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mBinding.collapsingToolbar.setTitle("詳細ページ");
 
-        mBinding.setViewModel(new ItemDetailViewModel());
+        mBinding.setVm(new ItemDetailViewModel());
         loadBackdrop();
+
+        new YouTubeService().search();
     }
 
     private void loadBackdrop() {

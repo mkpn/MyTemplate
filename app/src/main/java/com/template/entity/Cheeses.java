@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.template.model;
+package com.template.entity;
 
 import com.template.R;
 
@@ -41,11 +41,13 @@ public class Cheeses {
     }
 
     public static final String[] sCheeseStrings = {
-            "クラスをbindするシンプルなサンプル", "ClickListenerもbindするシンプルなサンプル",
+            "クラスをbindするシンプルなサンプル",
+            "ClickListenerもbindするシンプルなサンプル",
             "ListをbindingしてRecyclerViewにadapterをセットするサンプル",
             "ObservableArrayList<String>のBinding",
             "データの中身によってViewの見え方を変えるBinding",
-            "Weather Activity"
+            "Weather Activity",
+            "YouTubeSearch Activity"
     };
 
 }

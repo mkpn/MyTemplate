@@ -37,14 +37,15 @@ import com.template.SimpleBindingActivity;
 import com.template.SimpleClickListenerBindingActivity;
 import com.template.VisibilityObservableListBindingActivity;
 import com.template.WeatherActivity;
+import com.template.YouTubeSearchActivity;
 import com.template.databinding.FragmentListBinding;
 import com.template.databinding.ListItemBinding;
-import com.template.model.Cheeses;
-import com.template.model.Item;
+import com.template.entity.Cheeses;
+import com.template.entity.Item;
 
 import java.util.ArrayList;
 
-public class MutableListFragment extends Fragment {
+public class MainListFragment extends Fragment {
 
     private FragmentListBinding mBinding;
 
@@ -109,6 +110,9 @@ public class MutableListFragment extends Fragment {
                             break;
                         case 5:
                             intent = new Intent(context, WeatherActivity.class);
+                            break;
+                        case 6:
+                            intent = new Intent(context, YouTubeSearchActivity.class);
                             break;
                         default:
                             intent = new Intent(context, ItemDetailActivity.class);

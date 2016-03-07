@@ -1,4 +1,4 @@
-package com.template.model;
+package com.template.entity;
 
 import android.databinding.BaseObservable;
 import android.databinding.ObservableField;

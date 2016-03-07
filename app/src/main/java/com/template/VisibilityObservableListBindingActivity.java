@@ -10,7 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.template.databinding.VisibilityObservableListBindingActivityBinding;
-import com.template.model.Item;
+import com.template.entity.Item;
 import com.template.view.adapter.ObservableStringListAdapter;
 
 public class VisibilityObservableListBindingActivity extends AppCompatActivity {

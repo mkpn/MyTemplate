@@ -17,7 +17,7 @@
     <data>
         <variable
             name="item"
-            type="com.template.model.Item"/>
+            type="com.template.entity.Item"/>
     </data>
 
     <LinearLayout

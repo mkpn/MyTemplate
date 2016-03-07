@@ -23,8 +23,8 @@ import android.view.Menu;
 
 import com.bumptech.glide.Glide;
 import com.template.databinding.ItemDetailActivityBinding;
-import com.template.model.Cheeses;
-import com.template.service.NetWorkService;
+import com.template.entity.Cheeses;
+import com.template.service.WeatherService;
 import com.template.view.viewmodel.ItemDetailViewModel;
 
 public class WeatherActivity extends AppCompatActivity {
@@ -46,48 +46,7 @@ public class WeatherActivity extends AppCompatActivity {
         mBinding.setViewModel(new ItemDetailViewModel());
         loadBackdrop();
 
-        new NetWorkService().getWeather();
-
-//        Gson gson = new GsonBuilder()
-//                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-//                .registerTypeAdapter(Date.class, new DateTypeAdapter())
-//                .create();
-//
-//        // RestAdapterを作成する
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl(END_POINT)
-//                .addConverterFactory(GsonConverterFactory.create(gson))
-//                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-//                .build();
-//
-//        // 天気予報情報を取得する
-//        //http://weather.livedoor.com/area/forecast/200010
-//        WeatherApi api = retrofit.create(WeatherApi.class);
-//
-//        api.getWeather("200010")
-//                .subscribeOn(Schedulers.newThread())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<Weather>() {
-//                    @Override
-//                    public void onCompleted() {
-//                        Log.d("デバッグ", "onComplete! weather ");
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        Log.d("デバッグ", "onEror!! ");
-//                    }
-//
-//                    @Override
-//                    public void onNext(Weather weather) {
-//                        Log.d("デバッグ", "on?Next weather ");
-//                        if (weather != null) {
-//                            for (PinpointLocations location : weather.getPinpointLocations()) {
-//                                Log.d("デバッグ", "name is " + location.getName());
-//                            }
-//                        }
-//                    }
-//                });
+        new WeatherService().getWeather();
     }
 
     private void loadBackdrop() {

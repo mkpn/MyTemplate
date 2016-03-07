@@ -22,7 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.template.databinding.SimpleBindingActivityBinding;
-import com.template.model.Item;
+import com.template.entity.Item;
 
 public class SimpleBindingActivity extends AppCompatActivity {
 

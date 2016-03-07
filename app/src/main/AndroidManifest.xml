@@ -44,6 +44,7 @@
         <activity android:name=".ObservableListBindingActivity"></activity>
         <activity android:name=".VisibilityObservableListBindingActivity"></activity>
         <activity android:name=".WeatherActivity"></activity>
+        <activity android:name=".YouTubeSearchActivity"></activity>
     </application>
 
 </manifest>

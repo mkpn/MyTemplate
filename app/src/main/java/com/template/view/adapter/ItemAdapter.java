@@ -6,10 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.template.BR;
 import com.template.R;
 import com.template.databinding.ListItemBinding;
-import com.template.model.Item;
+import com.template.entity.Item;
 
 import java.util.List;
 

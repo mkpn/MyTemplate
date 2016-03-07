@@ -9,11 +9,9 @@ import android.view.ViewGroup;
 import com.template.BR;
 import com.template.R;
 import com.template.databinding.ListItemBinding;
-import com.template.model.Item;
+import com.template.entity.Item;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by makoto on 2016/02/15.

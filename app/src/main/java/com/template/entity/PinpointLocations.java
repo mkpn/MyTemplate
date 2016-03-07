@@ -1,4 +1,4 @@
-package com.template.model;
+package com.template.entity;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
