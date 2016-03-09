@@ -2,7 +2,6 @@ package com.template.view.adapter;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +37,6 @@ public class ObservableItemAdapter extends RecyclerView.Adapter<ObservableItemAd
 
     @Override
     public int getItemCount() {
-        Log.d("デバッグ", "adapter item size is " + observableItemList.items.size());
         return observableItemList.items == null ? 0 : observableItemList.items.size();
     }
 

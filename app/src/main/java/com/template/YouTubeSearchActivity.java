@@ -18,22 +18,31 @@ package com.template;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 
 import com.bumptech.glide.Glide;
+import com.template.activity.BaseActivity;
 import com.template.databinding.YoutubeSearchActivityBinding;
 import com.template.entity.Cheeses;
+import com.template.event.SearchYoutubeSuccessEvent;
 import com.template.service.YouTubeService;
-import com.template.view.viewmodel.ItemDetailViewModel;
 
-public class YouTubeSearchActivity extends AppCompatActivity {
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import javax.inject.Inject;
+
+public class YouTubeSearchActivity extends BaseActivity {
 
     private YoutubeSearchActivityBinding mBinding;
+    @Inject
+    YouTubeService youTubeService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getApplicationComponent().inject(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.youtube_search_activity);
 
         setSupportActionBar(mBinding.toolbar);
@@ -41,10 +50,25 @@ public class YouTubeSearchActivity extends AppCompatActivity {
 
         mBinding.collapsingToolbar.setTitle("詳細ページ");
 
-        mBinding.setVm(new ItemDetailViewModel());
         loadBackdrop();
+        youTubeService.search();
+    }
 
-        new YouTubeService().search();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void onSearchYoutubeSuccess(SearchYoutubeSuccessEvent event) {
+        mBinding.setSearchResults(event.response);
     }
 
     private void loadBackdrop() {

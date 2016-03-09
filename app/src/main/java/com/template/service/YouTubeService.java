@@ -1,19 +1,34 @@
 package com.template.service;
 
+import android.databinding.ObservableArrayList;
+import android.support.v4.util.Pair;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.template.BuildConfig;
 import com.template.api.YouTubeSearchApi;
+import com.template.api.YouTubeVideoListApi;
+import com.template.entity.SearchResult;
 import com.template.entity.YoutubeSearchResponse;
+import com.template.entity.YoutubeVideosResponse;
+import com.template.event.SearchYoutubeSuccessEvent;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static okhttp3.logging.HttpLoggingInterceptor.Level;
 
 /**
  * Created by makoto on 2016/03/04.
@@ -24,7 +39,7 @@ public class YouTubeService {
     public void search() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         // set your desired log level
-//        logging.setLevel(Level.BODY);
+        logging.setLevel(Level.BASIC);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         // add your other interceptors …
 
@@ -44,11 +59,20 @@ public class YouTubeService {
                 .build();
 
         YouTubeSearchApi api = retrofit.create(YouTubeSearchApi.class);
+        YouTubeVideoListApi videoListApi = retrofit.create(YouTubeVideoListApi.class);
+
 
         api.getResult("オルフェンズの涙", BuildConfig.PARSE_YOUTUBE_BROWSER_API_KEY)
+                .flatMap(youtubeSearchResponse -> Observable.combineLatest(
+                        Observable.just(youtubeSearchResponse),
+                        videoListApi.getResult(joinVideoIds(youtubeSearchResponse), BuildConfig.PARSE_YOUTUBE_BROWSER_API_KEY),
+                        Pair::create
+                )
+                )
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<YoutubeSearchResponse>() {
+                .map(this::fetchVideoListResponse)
+                .subscribe(new Subscriber<ObservableArrayList<SearchResult>>() {
                     @Override
                     public void onCompleted() {
 
@@ -56,12 +80,33 @@ public class YouTubeService {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        e.printStackTrace();
                     }
 
                     @Override
-                    public void onNext(YoutubeSearchResponse youtubeSearchResponse) {
+                    public void onNext(ObservableArrayList<SearchResult> searchResults) {
+                        EventBus.getDefault().post(new SearchYoutubeSuccessEvent(searchResults));
                     }
                 });
+
+    }
+
+    private ObservableArrayList<SearchResult> fetchVideoListResponse(Pair<YoutubeSearchResponse, YoutubeVideosResponse> pair) {
+        List<SearchResult> searchResults = pair.first.getSearchResults();
+        ObservableArrayList<SearchResult> resultList = new ObservableArrayList<>();
+
+        for (int i = 0; i < searchResults.size(); i++) {
+            searchResults.get(i).contentDetails = pair.second.item.get(i).contentDetails;
+            resultList.add(searchResults.get(i));
+        }
+        return resultList;
+    }
+
+    private String joinVideoIds(YoutubeSearchResponse youtubeSearchResponse) {
+        return Observable.from(youtubeSearchResponse.getSearchResults())
+                .map(searchResult -> searchResult.id.videoId)
+                .reduce((s, s2) -> s + (s.isEmpty() ? "" : ",") + s2)
+                .toBlocking()
+                .single();
     }
 }

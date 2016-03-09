@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'android-apt'
+
 android {
     compileSdkVersion 23
     buildToolsVersion '23.0.1'
@@ -11,7 +13,7 @@ android {
         versionName "1.0"
     }
     buildTypes {
-        debug{
+        debug {
             buildConfigField "String", "PARSE_YOUTUBE_BROWSER_API_KEY", "\"${project.property("parseYouTubeBrowserApiKey")}\""
             buildConfigField "String", "PARSE_YOUTUBE_SDK_API_KEY", "\"${project.property("parseYouTubeSdkApiKey")}\""
         }
@@ -25,7 +27,7 @@ android {
     productFlavors {
     }
 
-    dataBinding{
+    dataBinding {
         enabled = true
     }
 
@@ -41,7 +43,7 @@ repositories {
 
 ext {
     retrofit2Version = '2.0.0-beta4'
-    okhttpVersion="3.2.0"
+    okhttpVersion = "3.2.0"
 }
 
 dependencies {
@@ -57,4 +59,8 @@ dependencies {
     compile "com.squareup.retrofit2:adapter-rxjava:$retrofit2Version"
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'io.reactivex:rxjava:x.y.z'
+
+    compile 'com.google.dagger:dagger:2.0.2'
+    apt 'com.google.dagger:dagger-compiler:2.0.2'
+    provided 'javax.annotation:jsr250-api:1.0'
 }

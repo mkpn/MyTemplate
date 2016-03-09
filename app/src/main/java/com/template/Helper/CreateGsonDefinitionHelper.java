@@ -1,4 +1,4 @@
-package com.template.Helper;
+package com.template.helper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +16,7 @@ import okhttp3.ResponseBody;
  * TODOでGetterやSetterを作成するコメントが生成されるから、Alt + Insertで作ってね
  * 完璧な生成はできないんやで。。。
  * JSONArrayの中身が複数の肩を持つJSONだったりすると上手くいかないよ
+ * メンバーは全部publicにしちゃうよ
  */
 public class CreateGsonDefinitionHelper {
 
@@ -30,7 +31,6 @@ public class CreateGsonDefinitionHelper {
         System.out.println("\n\n====================================================");
     }
 
-
     private static StringBuilder buildGsonDefinitionString(String s, StringBuilder builder, int indent) {
         try {
             JSONObject jObject = new JSONObject(s);
@@ -41,7 +41,7 @@ public class CreateGsonDefinitionHelper {
                 // シンプルな key と value
                 if (value.startsWith("\"") && value.endsWith("\"")) {
                     builder.append("@Expose\n")
-                            .append("private ")
+                            .append("public ")
                             .append("String ")
                             .append(key)
                             .append(";\n\n");
@@ -49,7 +49,7 @@ public class CreateGsonDefinitionHelper {
                 } else if (value.startsWith("{") && value.endsWith("}")) {
                     // valueがJson　のケース
                     builder.append("@Expose\n")
-                            .append("private ")
+                            .append("public ")
                             .append(makeFirstCharacterUpperCase(key) + " ")
                             .append(key)
                             .append(";\n\n");
@@ -59,11 +59,10 @@ public class CreateGsonDefinitionHelper {
                             .append(" { \n");
                     buildGsonDefinitionString(value, builder, indent + 4);
 
-                    builder.append("\n // TODO MUST create Getter & Setter\n")
-                            .append("\n }\n\n");
+                    builder.append("\n }\n\n");
                 } else if (value.startsWith("[") && value.endsWith("]")) {
                     builder.append("@Expose\n")
-                            .append("private ")
+                            .append("public ")
                             .append("List<")
                             .append(makeFirstCharacterUpperCase(key))
                             .append("> ")
@@ -80,17 +79,16 @@ public class CreateGsonDefinitionHelper {
                     JSONArray jsonArray = new JSONArray(value);
                     buildGsonDefinitionString(jsonArray.get(0).toString(), builder, nextIndent); // 配列の中身が全部同じJSONなら動く
 
-                    builder.append("\n // TODO MUST create Getter & Setter\n")
-                            .append("\n }\n\n");
+                    builder.append("\n }\n\n");
                 } else if (isNum(value)) {
                     builder.append("@Expose\n")
-                            .append("private ")
+                            .append("public ")
                             .append("int ")
                             .append(key)
                             .append(";\n\n");
                 } else {
                     builder.append("@Expose\n")
-                            .append("private ")
+                            .append("public ")
                             .append("String ")
                             .append(key)
                             .append(";\n\n");
