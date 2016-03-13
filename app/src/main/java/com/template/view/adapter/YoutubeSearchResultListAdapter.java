@@ -46,6 +46,10 @@ public class YoutubeSearchResultListAdapter extends RecyclerView.Adapter<Youtube
         return searchResults == null ? 0 : searchResults.size();
     }
 
+    public ObservableArrayList<SearchResult> getDataList() {
+        return searchResults;
+    }
+
     public static class CustomViewHolder extends RecyclerView.ViewHolder {
         private YoutubeSearchResultItemBinding mBinding;
 

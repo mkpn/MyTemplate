@@ -1,8 +1,8 @@
 package com.template.di.component;
 
-import com.template.YouTubeSearchActivity;
 import com.template.di.module.AppModule;
 import com.template.di.module.UiModule;
+import com.template.view.activity.YouTubeSearchActivity;
 
 import javax.inject.Singleton;
 

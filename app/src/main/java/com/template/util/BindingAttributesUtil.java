@@ -4,6 +4,7 @@ import android.databinding.BindingAdapter;
 import android.databinding.ObservableArrayList;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;

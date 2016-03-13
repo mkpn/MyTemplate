@@ -20,7 +20,9 @@ public class SearchResult {
         @Expose
         public String kind;
         @Expose
-        public String videoId;
+        public String videoId = "";
+        @Expose
+        public String playlistId = "";
     }
 
     @Expose

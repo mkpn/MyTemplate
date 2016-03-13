@@ -1,4 +1,4 @@
-package com.template.activity;
+package com.template.view;
 
 import android.support.v7.app.AppCompatActivity;
 

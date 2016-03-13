@@ -35,17 +35,42 @@ import static okhttp3.logging.HttpLoggingInterceptor.Level;
  */
 public class YouTubeService {
     private static final String END_POINT = "https://www.googleapis.com";
+    private ObservableArrayList<SearchResult> results = new ObservableArrayList<>();
 
     public void search() {
+        search("オルフェンズの涙");
+    }
+
+    private ObservableArrayList<SearchResult> fetchVideoListResponse(Pair<YoutubeSearchResponse, YoutubeVideosResponse> pair) {
+        List<SearchResult> searchResults = pair.first.getSearchResults();
+        ObservableArrayList<SearchResult> resultList = new ObservableArrayList<>();
+
+        for (int i = 0; i < searchResults.size(); i++) {
+            searchResults.get(i).contentDetails = pair.second.item.get(i).contentDetails;
+            resultList.add(searchResults.get(i));
+        }
+        return resultList;
+    }
+
+    private String joinVideoIds(YoutubeSearchResponse youtubeSearchResponse) {
+        return Observable.from(youtubeSearchResponse.getSearchResults())
+                .map(searchResult -> searchResult.id.kind.equals("youtube#video")
+                        ? searchResult.id.videoId
+                        : searchResult.id.playlistId)
+                .reduce((s, s2) -> s + (s.isEmpty() ? "" : ",") + s2)
+                .toBlocking()
+                .single();
+    }
+
+    public void search(String query) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         // set your desired log level
-        logging.setLevel(Level.BASIC);
+        logging.setLevel(Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         // add your other interceptors …
 
         // add logging as last interceptor
         httpClient.addInterceptor(logging);  // <-- this is the important line!
-
 
         Gson gson = new GsonBuilder()
                 .create();
@@ -62,12 +87,12 @@ public class YouTubeService {
         YouTubeVideoListApi videoListApi = retrofit.create(YouTubeVideoListApi.class);
 
 
-        api.getResult("オルフェンズの涙", BuildConfig.PARSE_YOUTUBE_BROWSER_API_KEY)
+        api.getResult(query, BuildConfig.PARSE_YOUTUBE_BROWSER_API_KEY)
                 .flatMap(youtubeSearchResponse -> Observable.combineLatest(
                         Observable.just(youtubeSearchResponse),
                         videoListApi.getResult(joinVideoIds(youtubeSearchResponse), BuildConfig.PARSE_YOUTUBE_BROWSER_API_KEY),
                         Pair::create
-                )
+                        )
                 )
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -85,28 +110,13 @@ public class YouTubeService {
 
                     @Override
                     public void onNext(ObservableArrayList<SearchResult> searchResults) {
-                        EventBus.getDefault().post(new SearchYoutubeSuccessEvent(searchResults));
+                        results.addAll(searchResults);
+                        EventBus.getDefault().post(new SearchYoutubeSuccessEvent(results));
                     }
                 });
-
     }
 
-    private ObservableArrayList<SearchResult> fetchVideoListResponse(Pair<YoutubeSearchResponse, YoutubeVideosResponse> pair) {
-        List<SearchResult> searchResults = pair.first.getSearchResults();
-        ObservableArrayList<SearchResult> resultList = new ObservableArrayList<>();
-
-        for (int i = 0; i < searchResults.size(); i++) {
-            searchResults.get(i).contentDetails = pair.second.item.get(i).contentDetails;
-            resultList.add(searchResults.get(i));
-        }
-        return resultList;
-    }
-
-    private String joinVideoIds(YoutubeSearchResponse youtubeSearchResponse) {
-        return Observable.from(youtubeSearchResponse.getSearchResults())
-                .map(searchResult -> searchResult.id.videoId)
-                .reduce((s, s2) -> s + (s.isEmpty() ? "" : ",") + s2)
-                .toBlocking()
-                .single();
+    public void clearResults(){
+        results.clear();
     }
 }

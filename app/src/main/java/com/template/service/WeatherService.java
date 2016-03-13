@@ -82,7 +82,6 @@ public class WeatherService {
                 .subscribe(new Subscriber<Weather>() {
                     @Override
                     public void onCompleted() {
-                        Log.d("デバッグ", "onComplete! weather ");
                     }
 
                     @Override
@@ -92,7 +91,6 @@ public class WeatherService {
 
                     @Override
                     public void onNext(Weather weather) {
-                        Log.d("デバッグ", "on?Next weather ");
                         if (weather != null) {
                             for (PinpointLocations location : weather.getPinpointLocations()) {
                                 Log.d("デバッグ", "name is " + location.getName());

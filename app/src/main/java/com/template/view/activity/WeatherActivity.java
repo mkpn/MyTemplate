@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.template;
+package com.template.view.activity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -22,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 
 import com.bumptech.glide.Glide;
+import com.template.R;
 import com.template.databinding.ItemDetailActivityBinding;
 import com.template.entity.Cheeses;
 import com.template.service.WeatherService;

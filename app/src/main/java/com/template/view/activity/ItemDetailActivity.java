@@ -14,61 +14,35 @@
  * limitations under the License.
  */
 
-package com.template;
+package com.template.view.activity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 
 import com.bumptech.glide.Glide;
-import com.template.activity.BaseActivity;
-import com.template.databinding.YoutubeSearchActivityBinding;
+import com.template.R;
+import com.template.databinding.ItemDetailActivityBinding;
 import com.template.entity.Cheeses;
-import com.template.event.SearchYoutubeSuccessEvent;
-import com.template.service.YouTubeService;
+import com.template.view.viewmodel.ItemDetailViewModel;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
+public class ItemDetailActivity extends AppCompatActivity {
 
-import javax.inject.Inject;
-
-public class YouTubeSearchActivity extends BaseActivity {
-
-    private YoutubeSearchActivityBinding mBinding;
-    @Inject
-    YouTubeService youTubeService;
+    private ItemDetailActivityBinding mBinding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getApplicationComponent().inject(this);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.youtube_search_activity);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.item_detail_activity);
 
         setSupportActionBar(mBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mBinding.collapsingToolbar.setTitle("詳細ページ");
 
+        mBinding.setViewModel(new ItemDetailViewModel());
         loadBackdrop();
-        youTubeService.search();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe
-    public void onSearchYoutubeSuccess(SearchYoutubeSuccessEvent event) {
-        mBinding.setSearchResults(event.response);
     }
 
     private void loadBackdrop() {

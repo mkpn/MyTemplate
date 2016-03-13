@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package com.template;
+package com.template.view.activity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.template.R;
 import com.template.databinding.SimpleClickListenerBindingActivityBinding;
 import com.template.entity.Item;
 
@@ -45,7 +46,6 @@ public class SimpleClickListenerBindingActivity extends AppCompatActivity {
 
         item = new Item();
         item.string.set("Hello World");
-//        mBinding.setItem(item);
         mBinding.setActivity(this);
     }
 }

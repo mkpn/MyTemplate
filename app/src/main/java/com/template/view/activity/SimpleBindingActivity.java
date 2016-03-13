@@ -14,43 +14,40 @@
  * limitations under the License.
  */
 
-package com.template;
+package com.template.view.activity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
+import android.view.View;
 
-import com.bumptech.glide.Glide;
-import com.template.databinding.ItemDetailActivityBinding;
-import com.template.entity.Cheeses;
-import com.template.view.viewmodel.ItemDetailViewModel;
+import com.template.R;
+import com.template.databinding.SimpleBindingActivityBinding;
+import com.template.entity.Item;
 
-public class ItemDetailActivity extends AppCompatActivity {
+public class SimpleBindingActivity extends AppCompatActivity {
 
-    private ItemDetailActivityBinding mBinding;
+    private SimpleBindingActivityBinding mBinding;
+    private Item item;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.item_detail_activity);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.simple_binding_activity);
 
         setSupportActionBar(mBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("SimpleExample");
 
-        mBinding.collapsingToolbar.setTitle("詳細ページ");
+        item = new Item();
+        item.string.set("Hello World");
+        mBinding.setItem(item);
 
-        mBinding.setViewModel(new ItemDetailViewModel());
-        loadBackdrop();
-    }
-
-    private void loadBackdrop() {
-        Glide.with(this).load(Cheeses.getRandomCheeseDrawable()).centerCrop().into(mBinding.backdrop);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.sample_actions, menu);
-        return true;
+        mBinding.changeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                item.string.set("変更されました！");
+            }
+        });
     }
 }
