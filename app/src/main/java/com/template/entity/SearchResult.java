@@ -15,6 +15,7 @@ public class SearchResult {
     public Id id;
 
     public YoutubeVideosResponse.Item.ContentDetails contentDetails;
+    public YoutubePlaylistsResponse.YoutubePlaylist.ContentDetails playList;
 
     public class Id {
         @Expose

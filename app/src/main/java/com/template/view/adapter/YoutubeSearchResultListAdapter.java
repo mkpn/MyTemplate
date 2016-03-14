@@ -8,29 +8,70 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.template.R;
+import com.template.constants.YoutubeConstants;
 import com.template.databinding.YoutubeSearchResultItemBinding;
 import com.template.entity.SearchResult;
+import com.template.entity.YoutubePlaylistsResponse;
+
+import java.util.List;
 
 /**
  * Created by makoto on 2016/02/15.
  */
-public class YoutubeSearchResultListAdapter extends RecyclerView.Adapter<YoutubeSearchResultListAdapter.CustomViewHolder> {
+public class YoutubeSearchResultListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ObservableArrayList<SearchResult> searchResults;
     private int viewCount;
 
     @Override
-    public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.youtube_search_result_item, parent, false);
-        return new CustomViewHolder(v);
+    public int getItemViewType(int position) {
+        SearchResult searchResult = searchResults.get(position);
+        switch (searchResult.kind) {
+            case YoutubeConstants.YOUTUBE_VIDEO:
+                return 1;
+            case YoutubeConstants.YOUTUBE_PLAYLIST:
+                return 2;
+            default:
+                return 1;
+        }
     }
 
     @Override
-    public void onBindViewHolder(CustomViewHolder holder, int position) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case 1:
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.youtube_search_result_item, parent, false);
+                return new YoutubeVideoViewHolder(v);
+            case 2:
+                View v1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.youtube_search_result_item, parent, false);
+                return new YoutubePlaylistViewHolder(v1);
+        }
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof YoutubeVideoViewHolder) {
+            bindYoutubeVideoViewHolder((YoutubeVideoViewHolder) holder, position);
+        } else {
+            bindPlaylistViewHolder((YoutubePlaylistViewHolder) holder,position);
+        }
+    }
+
+
+    public void bindYoutubeVideoViewHolder(YoutubeVideoViewHolder holder, int position) {
         viewCount = holder.getAdapterPosition();// position使うとLintに怒られる
-        SearchResult searchResult = searchResults.get(position);
+        SearchResult searchResult = (SearchResult) searchResults.get(position);
         YoutubeSearchResultItemBinding binding = holder.getBinding();
         binding.setSearchResult(searchResult);
         binding.executePendingBindings();
+    }
+
+    public void bindPlaylistViewHolder(YoutubePlaylistViewHolder holder, int position) {
+        viewCount = holder.getAdapterPosition();// position使うとLintに怒られる
+        SearchResult searchResult = searchResults.get(position);
+        YoutubeSearchResultItemBinding binding = holder.getBinding();
+//        binding.setSearchResult(searchResult);
+//        binding.executePendingBindings();
     }
 
     public YoutubeSearchResultListAdapter(final ObservableArrayList<SearchResult> itemList) {
@@ -50,10 +91,23 @@ public class YoutubeSearchResultListAdapter extends RecyclerView.Adapter<Youtube
         return searchResults;
     }
 
-    public static class CustomViewHolder extends RecyclerView.ViewHolder {
+    public static class YoutubeVideoViewHolder extends RecyclerView.ViewHolder {
         private YoutubeSearchResultItemBinding mBinding;
 
-        public CustomViewHolder(View itemView) {
+        public YoutubeVideoViewHolder(View itemView) {
+            super(itemView);
+            mBinding = DataBindingUtil.bind(itemView);
+        }
+
+        public YoutubeSearchResultItemBinding getBinding() {
+            return mBinding;
+        }
+    }
+
+    public static class YoutubePlaylistViewHolder extends RecyclerView.ViewHolder {
+        private YoutubeSearchResultItemBinding mBinding;
+
+        public YoutubePlaylistViewHolder(View itemView) {
             super(itemView);
             mBinding = DataBindingUtil.bind(itemView);
         }

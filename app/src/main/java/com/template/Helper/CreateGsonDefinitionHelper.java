@@ -21,9 +21,13 @@ import okhttp3.ResponseBody;
 public class CreateGsonDefinitionHelper {
 
     public static void createDefinition(ResponseBody responseBody) throws IOException {
+        createDefinition(responseBody.string());
+    }
+
+    public static void createDefinition(String string) throws IOException {
         System.out.println("=====GSON Definition================================\n\n");
 
-        StringBuilder stringBuilder = buildGsonDefinitionString(responseBody.string(), new StringBuilder(), 0);
+        StringBuilder stringBuilder = buildGsonDefinitionString(string, new StringBuilder(), 0);
 
         stringBuilder.append("\n // TODO MUST create Getter & Setter\n");
         System.out.println(stringBuilder.toString());

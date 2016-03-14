@@ -77,8 +77,6 @@ public class YouTubeSearchActivity extends BaseActivity {
         item.setActionView(mSearchView);
 
         mBinding.toolbar.setTitle("詳細ページ");
-
-        if (!query.isEmpty()) youTubeService.search();
     }
 
     @Override
