@@ -2,7 +2,7 @@ package com.template.di.component;
 
 import com.template.di.module.AppModule;
 import com.template.di.module.UiModule;
-import com.template.view.activity.YouTubeSearchActivity;
+import com.template.ui.activity.YouTubeSearchActivity;
 
 import javax.inject.Singleton;
 

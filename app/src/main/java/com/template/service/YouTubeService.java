@@ -2,26 +2,32 @@ package com.template.service;
 
 import android.databinding.ObservableArrayList;
 import android.support.annotation.NonNull;
-import android.support.v4.util.Pair;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.template.BuildConfig;
 import com.template.Tuple3;
+import com.template.Tuple4;
+import com.template.api.YouTubeChannelsApi;
 import com.template.api.YouTubePlayListsApi;
 import com.template.api.YouTubeSearchApi;
 import com.template.api.YouTubeVideoListApi;
 import com.template.constants.YoutubeConstants;
 import com.template.entity.SearchResult;
+import com.template.entity.YoutubeChannelsResponse;
 import com.template.entity.YoutubePlaylistsResponse;
 import com.template.entity.YoutubeSearchResponse;
 import com.template.entity.YoutubeVideosResponse;
 import com.template.event.SearchYoutubeSuccessEvent;
+import com.template.helper.CreateGsonDefinitionHelper;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.IOException;
+
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -41,35 +47,12 @@ public class YouTubeService {
     private ObservableArrayList<SearchResult> results = new ObservableArrayList<>();
     private Retrofit retrofit;
 
-    private ObservableArrayList<SearchResult> fetchVideoListResponse(Pair<YoutubeVideosResponse, YoutubePlaylistsResponse> pair) {
-//        List<SearchResult> searchResults = pair.first.getSearchResults();
-//        ObservableArrayList<SearchResult> resultList = new ObservableArrayList<>();
-//
-//        for (int i = 0; i < searchResults.size(); i++) {
-//            searchResults.get(i).contentDetails = pair.second.items.get(i).contentDetails;
-//            resultList.add(searchResults.get(i));
-//        }
-//        return resultList;
-
-        return null;
-    }
-
-    private String joinVideoIds(YoutubeSearchResponse youtubeSearchResponse) {
-        return Observable.from(youtubeSearchResponse.getSearchResults())
-                .map(searchResult -> searchResult.id.kind.equals("youtube#video")
-                        ? searchResult.id.videoId
-                        : searchResult.id.playlistId)
-                .reduce(this::joinIds)
-                .toBlocking()
-                .single();
-    }
-
     @NonNull
     private String joinIds(String s, String s2) {
         return (TextUtils.isEmpty(s) ? "" : s) + (TextUtils.isEmpty(s) ? "" : ",") + s2;
     }
 
-    public Observable<YoutubePlaylistsResponse> getPlayList(YoutubeSearchResponse youtubeSearchResponse) {
+    private Observable<YoutubePlaylistsResponse> getPlayList(YoutubeSearchResponse youtubeSearchResponse) {
         String playlistIds = Observable.from(youtubeSearchResponse.getSearchResults())
                 .map(searchResult -> searchResult.id.playlistId)
                 .reduce(this::joinIds)
@@ -88,7 +71,7 @@ public class YouTubeService {
     private Observable<YoutubeVideosResponse> getVideos(YoutubeSearchResponse youtubeSearchResponse) {
         String videoIds = Observable.from(youtubeSearchResponse.getSearchResults())
                 .map(searchResult -> searchResult.id.videoId)
-                .reduce((s, s2) -> s + (s.isEmpty() ? "" : ",") + s2)
+                .reduce(this::joinIds)
                 .toBlocking()
                 .single();
 
@@ -101,20 +84,26 @@ public class YouTubeService {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private String joinChannelId(YoutubeSearchResponse youtubeSearchResponse) {
-        return Observable.from(youtubeSearchResponse.getSearchResults())
-                .map(searchResult -> searchResult.id.kind.equals("youtube#video")
-                        ? searchResult.id.videoId
-                        : searchResult.id.playlistId)
-                .reduce((s, s2) -> s + (s.isEmpty() ? "" : ",") + s2)
+    private Observable<YoutubeChannelsResponse> getChannels(YoutubeSearchResponse youtubeSearchResponse) {
+        String channelIds = Observable.from(youtubeSearchResponse.getSearchResults())
+                .map(searchResult -> searchResult.id.channelId)
+                .reduce(this::joinIds)
                 .toBlocking()
                 .single();
+
+        if (TextUtils.isEmpty(channelIds)) return null;
+
+        YouTubeChannelsApi channelsApi = retrofit.create(YouTubeChannelsApi.class);
+
+        return channelsApi.getResult(channelIds, BuildConfig.PARSE_YOUTUBE_BROWSER_API_KEY)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public void search(String query) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         // set your desired log level
-        logging.setLevel(Level.BODY);
+        logging.setLevel(Level.BASIC);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         // add your other interceptors …
 
@@ -138,7 +127,8 @@ public class YouTubeService {
                         Observable.just(youtubeSearchResponse),
                         getVideos(youtubeSearchResponse),
                         getPlayList(youtubeSearchResponse),
-                        Tuple3::create
+                        getChannels(youtubeSearchResponse),
+                        Tuple4::create
                         )
                 )
                 .subscribeOn(Schedulers.newThread())
@@ -163,12 +153,12 @@ public class YouTubeService {
                 });
     }
 
-    private ObservableArrayList<SearchResult> fetchVideoListResponse(Tuple3<YoutubeSearchResponse,
-            YoutubeVideosResponse, YoutubePlaylistsResponse> tuple3) {
+    private ObservableArrayList<SearchResult> fetchVideoListResponse(Tuple4<YoutubeSearchResponse, YoutubeVideosResponse, YoutubePlaylistsResponse, YoutubeChannelsResponse> tuple4) {
 
-        YoutubeSearchResponse youtubeSearchResponse = tuple3.first;
-        YoutubeVideosResponse youtubeVideosResponse = tuple3.second;
-        YoutubePlaylistsResponse youtubePlaylistsResponse = tuple3.third;
+        YoutubeSearchResponse youtubeSearchResponse = tuple4.first;
+        YoutubeVideosResponse youtubeVideosResponse = tuple4.second;
+        YoutubePlaylistsResponse youtubePlaylistsResponse = tuple4.third;
+        YoutubeChannelsResponse youtubeChannelsResponse = tuple4.forth;
 
         ObservableArrayList<SearchResult> list = new ObservableArrayList<>();
         for (SearchResult searchResult : youtubeSearchResponse.getSearchResults()) {
@@ -182,6 +172,12 @@ public class YouTubeService {
                     searchResult.playList = youtubePlaylistsResponse.items.get(0).contentDetails;
                     youtubePlaylistsResponse.items.remove(0);
                     list.add(searchResult);
+                    break;
+                case YoutubeConstants.YOUTUBE_CHANNEL:
+                    searchResult.channel = youtubeChannelsResponse.items.get(0).snippet;
+                    youtubeChannelsResponse.items.remove(0);
+                    list.add(searchResult);
+                    break;
             }
         }
         return list;

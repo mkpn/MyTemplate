@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.template.view.activity;
+package com.template.ui.activity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -22,30 +22,32 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.template.R;
-import com.template.databinding.SimpleClickListenerBindingActivityBinding;
+import com.template.databinding.SimpleBindingActivityBinding;
 import com.template.entity.Item;
 
-public class SimpleClickListenerBindingActivity extends AppCompatActivity {
+public class SimpleBindingActivity extends AppCompatActivity {
 
-    private SimpleClickListenerBindingActivityBinding mBinding;
-    public Item item;
-    public View.OnClickListener listener = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            item.string.set("変更されました！");
-        }
-    };
+    private SimpleBindingActivityBinding mBinding;
+    private Item item;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.simple_click_listener_binding_activity);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.simple_binding_activity);
+
         setSupportActionBar(mBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("SimpleExample");
 
         item = new Item();
         item.string.set("Hello World");
-        mBinding.setActivity(this);
+        mBinding.setItem(item);
+
+        mBinding.changeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                item.string.set("変更されました！");
+            }
+        });
     }
 }

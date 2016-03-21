@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.template.view.activity;
+package com.template.ui.activity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -27,7 +27,7 @@ import android.view.MenuItem;
 
 import com.template.R;
 import com.template.databinding.MainActivityBinding;
-import com.template.view.fragment.MainListFragment;
+import com.template.ui.fragment.MainListFragment;
 
 /**
  * TODO

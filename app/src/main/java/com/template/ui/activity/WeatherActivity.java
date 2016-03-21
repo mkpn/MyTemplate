@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.template.view.activity;
+package com.template.ui.activity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -26,7 +26,7 @@ import com.template.R;
 import com.template.databinding.ItemDetailActivityBinding;
 import com.template.entity.Cheeses;
 import com.template.service.WeatherService;
-import com.template.view.viewmodel.ItemDetailViewModel;
+import com.template.ui.viewmodel.ItemDetailViewModel;
 
 public class WeatherActivity extends AppCompatActivity {
 

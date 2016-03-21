@@ -4,12 +4,11 @@ import android.databinding.BindingAdapter;
 import android.databinding.ObservableArrayList;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.template.entity.SearchResult;
-import com.template.view.adapter.YoutubeSearchResultListAdapter;
+import com.template.ui.adapter.YoutubeSearchResultListAdapter;
 
 /**
  * Created by makoto on 2016/03/09.

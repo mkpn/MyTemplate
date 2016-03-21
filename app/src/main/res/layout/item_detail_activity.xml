@@ -17,7 +17,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.template.view.viewmodel.ItemDetailViewModel"/>
+            type="com.template.ui.viewmodel.ItemDetailViewModel"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"

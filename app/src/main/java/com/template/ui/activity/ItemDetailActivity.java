@@ -14,40 +14,44 @@
  * limitations under the License.
  */
 
-package com.template.view.activity;
+package com.template.ui.activity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.view.Menu;
 
+import com.bumptech.glide.Glide;
 import com.template.R;
-import com.template.databinding.SimpleBindingActivityBinding;
-import com.template.entity.Item;
+import com.template.databinding.ItemDetailActivityBinding;
+import com.template.entity.Cheeses;
+import com.template.ui.viewmodel.ItemDetailViewModel;
 
-public class SimpleBindingActivity extends AppCompatActivity {
+public class ItemDetailActivity extends AppCompatActivity {
 
-    private SimpleBindingActivityBinding mBinding;
-    private Item item;
+    private ItemDetailActivityBinding mBinding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.simple_binding_activity);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.item_detail_activity);
 
         setSupportActionBar(mBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("SimpleExample");
 
-        item = new Item();
-        item.string.set("Hello World");
-        mBinding.setItem(item);
+        mBinding.collapsingToolbar.setTitle("詳細ページ");
 
-        mBinding.changeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                item.string.set("変更されました！");
-            }
-        });
+        mBinding.setViewModel(new ItemDetailViewModel());
+        loadBackdrop();
+    }
+
+    private void loadBackdrop() {
+        Glide.with(this).load(Cheeses.getRandomCheeseDrawable()).centerCrop().into(mBinding.backdrop);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.sample_actions, menu);
+        return true;
     }
 }

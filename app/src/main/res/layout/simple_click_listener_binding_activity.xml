@@ -19,7 +19,7 @@
     <data>
         <variable
             name="activity"
-            type="com.template.view.activity.SimpleClickListenerBindingActivity" />
+            type="com.template.ui.activity.SimpleClickListenerBindingActivity" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"

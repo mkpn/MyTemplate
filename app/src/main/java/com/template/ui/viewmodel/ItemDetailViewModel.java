@@ -1,4 +1,4 @@
-package com.template.view.viewmodel;
+package com.template.ui.viewmodel;
 
 import android.databinding.ObservableField;
 

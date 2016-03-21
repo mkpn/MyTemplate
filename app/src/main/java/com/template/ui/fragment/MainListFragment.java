@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.template.view.fragment;
+package com.template.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -29,15 +29,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.template.BR;
-import com.template.view.activity.ItemDetailActivity;
-import com.template.view.activity.ListBindingActivity;
-import com.template.view.activity.ObservableListBindingActivity;
+import com.template.ui.activity.ItemDetailActivity;
+import com.template.ui.activity.ListBindingActivity;
+import com.template.ui.activity.ObservableListBindingActivity;
 import com.template.R;
-import com.template.view.activity.SimpleBindingActivity;
-import com.template.view.activity.SimpleClickListenerBindingActivity;
-import com.template.view.activity.VisibilityObservableListBindingActivity;
-import com.template.view.activity.WeatherActivity;
-import com.template.view.activity.YouTubeSearchActivity;
+import com.template.ui.activity.SimpleBindingActivity;
+import com.template.ui.activity.SimpleClickListenerBindingActivity;
+import com.template.ui.activity.VisibilityObservableListBindingActivity;
+import com.template.ui.activity.WeatherActivity;
+import com.template.ui.activity.YouTubeSearchActivity;
 import com.template.databinding.FragmentListBinding;
 import com.template.databinding.ListItemBinding;
 import com.template.entity.Cheeses;

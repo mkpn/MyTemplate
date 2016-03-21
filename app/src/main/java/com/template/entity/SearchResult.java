@@ -1,5 +1,7 @@
 package com.template.entity;
 
+import android.view.ViewDebug;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -16,6 +18,7 @@ public class SearchResult {
 
     public YoutubeVideosResponse.Item.ContentDetails contentDetails;
     public YoutubePlaylistsResponse.YoutubePlaylist.ContentDetails playList;
+    public YoutubeChannelsResponse.Channel.Snippet channel;
 
     public class Id {
         @Expose
@@ -24,6 +27,8 @@ public class SearchResult {
         public String videoId = "";
         @Expose
         public String playlistId = "";
+        @Expose
+        public String channelId = "";
     }
 
     @Expose

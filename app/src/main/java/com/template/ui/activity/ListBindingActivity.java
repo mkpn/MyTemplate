@@ -1,4 +1,4 @@
-package com.template.view.activity;
+package com.template.ui.activity;
 
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
@@ -11,7 +11,7 @@ import android.view.View;
 import com.template.R;
 import com.template.databinding.ActivityListBindingBinding;
 import com.template.entity.Item;
-import com.template.view.adapter.ItemAdapter;
+import com.template.ui.adapter.ItemAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

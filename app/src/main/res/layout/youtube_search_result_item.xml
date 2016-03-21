@@ -36,16 +36,14 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/dp_x1">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/thumbnail"
-                android:layout_width="@dimen/px120_as_dp"
-                android:layout_height="@dimen/px90_as_dp"
+                android:layout_width="@dimen/px321_as_dp"
+                android:layout_height="@dimen/px180_as_dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dp_x1"
-                bind:thumbnailUrl="@{searchResult.snippet.thumbnails.defaultThumb.url}"
+                bind:thumbnailUrl="@{searchResult.snippet.thumbnails.medium.url}"
                 tools:src="@drawable/ic_dashboard" />
 
             <TextView

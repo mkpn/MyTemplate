@@ -1,4 +1,4 @@
-package com.template.view.activity;
+package com.template.ui.activity;
 
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
@@ -12,7 +12,7 @@ import android.view.View;
 import com.template.R;
 import com.template.databinding.ObservableListBindingActivityBinding;
 import com.template.entity.Item;
-import com.template.view.adapter.ObservableStringListAdapter;
+import com.template.ui.adapter.ObservableStringListAdapter;
 
 public class ObservableListBindingActivity extends AppCompatActivity {
 

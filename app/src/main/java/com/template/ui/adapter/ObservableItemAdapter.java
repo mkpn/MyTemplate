@@ -1,7 +1,6 @@
-package com.template.view.adapter;
+package com.template.ui.adapter;
 
 import android.databinding.DataBindingUtil;
-import android.databinding.ObservableArrayList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,45 +8,47 @@ import android.view.ViewGroup;
 
 import com.template.BR;
 import com.template.R;
-import com.template.databinding.ObservableStringListItemBinding;
+import com.template.databinding.ListItemBinding;
+import com.template.entity.Item;
+import com.template.entity.ObservableItems;
 
 /**
  * Created by makoto on 2016/02/15.
  */
-public class ObservableStringListAdapter extends RecyclerView.Adapter<ObservableStringListAdapter.ItemViewHolder> {
-    private ObservableArrayList<String> observableItemList;
+public class ObservableItemAdapter extends RecyclerView.Adapter<ObservableItemAdapter.ItemViewHolder> {
+    private ObservableItems observableItemList;
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.observable_string_list_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
         return new ItemViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
-        String str = observableItemList.get(position);
-        holder.getBinding().setVariable(BR.string, str);
+        Item item = observableItemList.items.get(position);
+        holder.getBinding().setVariable(BR.item, item);
         holder.getBinding().executePendingBindings();
     }
 
-    public ObservableStringListAdapter(final ObservableArrayList<String> itemList) {
+    public ObservableItemAdapter(final ObservableItems itemList) {
         observableItemList = itemList;
     }
 
     @Override
     public int getItemCount() {
-        return observableItemList == null ? 0 : observableItemList.size();
+        return observableItemList.items == null ? 0 : observableItemList.items.size();
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
-        private ObservableStringListItemBinding mBinding;
+        private ListItemBinding mBinding;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             mBinding = DataBindingUtil.bind(itemView);
         }
 
-        public ObservableStringListItemBinding getBinding() {
+        public ListItemBinding getBinding() {
             return mBinding;
         }
     }

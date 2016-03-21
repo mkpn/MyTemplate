@@ -6,4 +6,5 @@ package com.template.constants;
 public class YoutubeConstants {
     public static final String YOUTUBE_VIDEO = "youtube#video";
     public static final String YOUTUBE_PLAYLIST = "youtube#playlist";
+    public static final String YOUTUBE_CHANNEL = "youtube#channel";
 }
