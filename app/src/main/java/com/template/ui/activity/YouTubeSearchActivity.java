@@ -33,7 +33,9 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.template.BuildConfig;
 import com.template.R;
+import com.template.api.YouTubeWebApi;
 import com.template.event.YoutubeVideoItemClickEvent;
+import com.template.service.ContentsLoadService;
 import com.template.ui.BaseActivity;
 import com.template.databinding.YoutubeSearchActivityBinding;
 import com.template.event.SearchYoutubeSuccessEvent;
@@ -49,6 +51,8 @@ public class YouTubeSearchActivity extends BaseActivity implements YouTubePlayer
     private YoutubeSearchActivityBinding binding;
     @Inject
     YouTubeService youTubeService;
+    @Inject
+    ContentsLoadService contentsLoadService;
     private SearchView mSearchView;
     private String query = "";
     private YouTubePlayer youTubePlayer;
@@ -100,6 +104,7 @@ public class YouTubeSearchActivity extends BaseActivity implements YouTubePlayer
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        contentsLoadService.loadYoutubeVideo("");
     }
 
     @Override
@@ -152,13 +157,11 @@ public class YouTubeSearchActivity extends BaseActivity implements YouTubePlayer
 
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-        Log.d("デバッグ", "success!!!");
         this.youTubePlayer = youTubePlayer;
         youTubePlayer.play();
     }
 
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-        Log.d("デバッグ", "failure...");
     }
 }

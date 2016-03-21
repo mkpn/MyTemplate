@@ -1,5 +1,6 @@
 package com.template.di.module;
 
+import com.template.service.ContentsLoadService;
 import com.template.service.YouTubeService;
 
 import javax.inject.Singleton;
@@ -16,6 +17,12 @@ public class UiModule {
     @Singleton
     public YouTubeService provideYouTubeService(){
         return new YouTubeService();
+    }
+
+    @Provides
+    @Singleton
+    public ContentsLoadService provideContentsLoadService(){
+        return new ContentsLoadService();
     }
 }
 

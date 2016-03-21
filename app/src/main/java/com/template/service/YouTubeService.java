@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.template.BuildConfig;
-import com.template.Tuple3;
 import com.template.Tuple4;
 import com.template.api.YouTubeChannelsApi;
 import com.template.api.YouTubePlayListsApi;
@@ -20,14 +19,10 @@ import com.template.entity.YoutubePlaylistsResponse;
 import com.template.entity.YoutubeSearchResponse;
 import com.template.entity.YoutubeVideosResponse;
 import com.template.event.SearchYoutubeSuccessEvent;
-import com.template.helper.CreateGsonDefinitionHelper;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.IOException;
-
 import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
