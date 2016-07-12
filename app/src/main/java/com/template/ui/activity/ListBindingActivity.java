@@ -1,61 +1,196 @@
 package com.template.ui.activity;
 
-import android.databinding.BindingAdapter;
+import android.content.ComponentName;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.database.Cursor;
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
+import android.databinding.ObservableArrayList;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.os.IBinder;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.MediaController;
 
+import com.google.common.eventbus.Subscribe;
+import com.template.MusicController;
 import com.template.R;
 import com.template.databinding.ActivityListBindingBinding;
-import com.template.entity.Item;
-import com.template.ui.adapter.ItemAdapter;
+import com.template.entity.Song;
+import com.template.event.SongSelectEvent;
+import com.template.service.MusicService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
-public class ListBindingActivity extends AppCompatActivity {
+public class ListBindingActivity extends AppCompatActivity implements MediaController.MediaPlayerControl {
+
+    private MusicController musicController;
 
     private ActivityListBindingBinding binding;
+
+    private ObservableArrayList<Song> songList;
+    private MusicService musicService;
+    private boolean isMusicBounded;
+    private Intent playIntent;
+    private ServiceConnection musicConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_list_binding);
 
-        final List<Item> items = new ArrayList<>();
-        for (int i = 0; i < 1000; i++) {
-            Item item = new Item();
-            item.string.set(String.valueOf(i));
-            items.add(item);
-        }
 
-        binding.setItems(items);
-        //微妙かも
-        binding.addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Item item = new Item();
-                item.string.set("追加した要素");
-                items.add(item);
-                binding.recyclerview.getAdapter().notifyDataSetChanged();
-            }
-        });
+        songList = getSongList();
+        Collections.sort(songList, (a, b) -> a.getTitle().compareTo(b.getTitle()));
+        binding.setSongs(songList);
 
-        binding.changeButton.setOnClickListener(new View.OnClickListener() {
+        musicConnection = new ServiceConnection() {
             @Override
-            public void onClick(View v) {
-                items.get(3).string.set("変化！");
+            public void onServiceConnected(final ComponentName name, final IBinder service) {
+                MusicService.MusicBinder binder = (MusicService.MusicBinder) service;
+                musicService = binder.getService();
+                musicService.setSongs(songList);
+                isMusicBounded = true;
             }
-        });
+
+            @Override
+            public void onServiceDisconnected(final ComponentName name) {
+                isMusicBounded = false;
+            }
+        };
+
+        musicController = new MusicController(this);
+
+        musicController.setPrevNextListeners(v -> playNext(), v -> playPrev());
+        musicController.setMediaPlayer(this);
+        musicController.setAnchorView(binding.recyclerview);
+        musicController.setEnabled(true);
     }
 
-    @BindingAdapter("items")
-    public static void setItems(RecyclerView recyclerView, List<Item> items){
-        ItemAdapter adapter = new ItemAdapter(items);
-        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext())); // これ忘れたらダメなんかい！！！！
-        recyclerView.setAdapter(adapter);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (playIntent == null) {
+            playIntent = new Intent(this, MusicService.class);
+            bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
+            startService(playIntent);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopService(playIntent);
+        musicService = null;
+        super.onDestroy();
+    }
+
+    private void setController() {
+
+    }
+
+    @org.greenrobot.eventbus.Subscribe
+    public void songPicked(SongSelectEvent event) {
+        musicService.setSongPosition(event.songId);
+        musicService.playSong();
+    }
+
+    public ObservableArrayList<Song> getSongList() {
+        //retrieve song info
+        ContentResolver musicResolver = getContentResolver();
+        Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
+        ObservableArrayList<Song> songs = new ObservableArrayList<>();
+
+        if (musicCursor != null && musicCursor.moveToFirst()) {
+            //get columns
+            int titleColumn = musicCursor.getColumnIndex(android.provider.MediaStore.Audio.Media.TITLE);
+
+            int idColumn = musicCursor.getColumnIndex(android.provider.MediaStore.Audio.Media._ID);
+
+            int artistColumn = musicCursor.getColumnIndex(android.provider.MediaStore.Audio.Media.ARTIST);
+            //add songs to list
+            do {
+                long thisId = musicCursor.getLong(idColumn);
+                String thisTitle = musicCursor.getString(titleColumn);
+                String thisArtist = musicCursor.getString(artistColumn);
+                songs.add(new Song(thisId, thisTitle, thisArtist));
+            }
+            while (musicCursor.moveToNext());
+        }
+        return songs;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_shuffle:
+                //shuffle
+                break;
+            case R.id.action_end:
+                stopService(playIntent);
+                musicService = null;
+                System.exit(0);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void start() {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public int getDuration() {
+        return 0;
+    }
+
+    @Override
+    public int getCurrentPosition() {
+        return 0;
+    }
+
+    @Override
+    public void seekTo(final int pos) {
+
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return false;
+    }
+
+    @Override
+    public int getBufferPercentage() {
+        return 0;
+    }
+
+    @Override
+    public boolean canPause() {
+        return false;
+    }
+
+    @Override
+    public boolean canSeekBackward() {
+        return false;
+    }
+
+    @Override
+    public boolean canSeekForward() {
+        return false;
+    }
+
+    @Override
+    public int getAudioSessionId() {
+        return 0;
     }
 }

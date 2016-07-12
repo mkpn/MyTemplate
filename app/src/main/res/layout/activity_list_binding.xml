@@ -2,13 +2,13 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="com.template.entity.Item" />
+        <import type="com.template.entity.Song" />
 
-        <import type="java.util.List" />
+        <import type="android.databinding.ObservableArrayList" />
 
         <variable
-            name="items"
-            type="List&lt;Item>" />
+            name="songs"
+            type="ObservableArrayList&lt;Song>" />
 
     </data>
 
@@ -48,7 +48,7 @@
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:items="@{items}" />
+            app:songs="@{songs}" />
 
     </LinearLayout>
 </layout>

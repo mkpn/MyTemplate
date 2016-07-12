@@ -23,7 +23,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,13 +32,12 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.template.BuildConfig;
 import com.template.R;
-import com.template.api.YouTubeWebApi;
-import com.template.event.YoutubeVideoItemClickEvent;
-import com.template.service.ContentsLoadService;
-import com.template.ui.BaseActivity;
 import com.template.databinding.YoutubeSearchActivityBinding;
 import com.template.event.SearchYoutubeSuccessEvent;
+import com.template.event.YoutubeVideoItemClickEvent;
+import com.template.service.ContentsLoadService;
 import com.template.service.YouTubeService;
+import com.template.ui.BaseActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -83,7 +81,7 @@ public class YouTubeSearchActivity extends BaseActivity implements YouTubePlayer
         });
 
         MenuItem item = menu.add("menu add");
-        item.setIcon(R.drawable.ic_search_white_18dp);
+        item.setIcon(R.drawable.ic_menu);
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         item.setActionView(mSearchView);
 

@@ -3,7 +3,6 @@ package com.template.ui.adapter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,6 @@ public class YoutubeSearchResultListAdapter extends RecyclerView.Adapter<Recycle
     @Override
     public int getItemViewType(int position) {
         SearchResult searchResult = searchResults.get(position);
-        Log.d("デバッグ", "kind is " + searchResult.id.kind);
         switch (searchResult.id.kind) {
             case YoutubeConstants.YOUTUBE_VIDEO:
                 return 1;

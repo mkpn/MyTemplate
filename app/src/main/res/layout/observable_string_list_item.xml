@@ -16,11 +16,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="string"
-            type="String"/>
+            name="song"
+            type="com.template.entity.Song"/>
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -31,12 +31,19 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@android:id/text1"
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
-            android:text="@{string}"
+            android:text="@{song.title}"
             android:textAppearance="?attr/textAppearanceListItem" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/artist"
+            android:text="@{song.artist}"
+            android:layout_below="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
 </layout>

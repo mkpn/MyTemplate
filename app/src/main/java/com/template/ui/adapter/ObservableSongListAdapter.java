@@ -7,15 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.template.BR;
 import com.template.R;
 import com.template.databinding.ObservableStringListItemBinding;
+import com.template.entity.Song;
+import com.template.event.SongSelectEvent;
 
 /**
  * Created by makoto on 2016/02/15.
  */
-public class ObservableStringListAdapter extends RecyclerView.Adapter<ObservableStringListAdapter.ItemViewHolder> {
-    private ObservableArrayList<String> observableItemList;
+public class ObservableSongListAdapter extends RecyclerView.Adapter<ObservableSongListAdapter.ItemViewHolder> {
+    private ObservableArrayList<Song> observableItemList;
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -25,13 +26,16 @@ public class ObservableStringListAdapter extends RecyclerView.Adapter<Observable
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
-        String str = observableItemList.get(position);
-        holder.getBinding().setVariable(BR.string, str);
+        Song song = observableItemList.get(position);
+        holder.getBinding().setSong(song);
         holder.getBinding().executePendingBindings();
+        holder.getBinding().getRoot().setOnClickListener(v -> {
+            org.greenrobot.eventbus.EventBus.getDefault().post(new SongSelectEvent((int) song.getId()));
+        });
     }
 
-    public ObservableStringListAdapter(final ObservableArrayList<String> itemList) {
-        observableItemList = itemList;
+    public ObservableSongListAdapter(final ObservableArrayList<Song> songs) {
+        observableItemList = songs;
     }
 
     @Override

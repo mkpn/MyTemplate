@@ -5,14 +5,12 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.template.R;
 import com.template.databinding.VisibilityObservableListBindingActivityBinding;
 import com.template.entity.Item;
-import com.template.ui.adapter.ObservableStringListAdapter;
 
 public class VisibilityObservableListBindingActivity extends AppCompatActivity {
 
@@ -54,12 +52,12 @@ public class VisibilityObservableListBindingActivity extends AppCompatActivity {
 
         recyclerView.setVisibility(View.VISIBLE);
 
-        if(recyclerView.getAdapter() == null){
-            recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
-            ObservableStringListAdapter adapter = new ObservableStringListAdapter(items);
-            recyclerView.setAdapter(adapter);
-            return;
-        }
+//        if(recyclerView.getAdapter() == null){
+//            recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
+//            ObservableSongListAdapter adapter = new ObservableSongListAdapter(items);
+//            recyclerView.setAdapter(adapter);
+//            return;
+//        }
 
         recyclerView.getAdapter().notifyDataSetChanged();
     }
