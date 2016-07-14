@@ -13,10 +13,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.MediaController;
 
-import com.google.common.eventbus.Subscribe;
 import com.template.MusicController;
 import com.template.R;
 import com.template.databinding.ActivityListBindingBinding;
@@ -37,6 +35,8 @@ public class ListBindingActivity extends AppCompatActivity implements MediaContr
     private boolean isMusicBounded;
     private Intent playIntent;
     private ServiceConnection musicConnection;
+    private boolean isPlayerPaused = false;
+    private boolean isPlaybackPaused = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +82,27 @@ public class ListBindingActivity extends AppCompatActivity implements MediaContr
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (isPlayerPaused) {
+            setController();
+            isPlayerPaused = true;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isPlayerPaused = true;
+    }
+
+    @Override
+    protected void onStop() {
+        musicController.hide();
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
         stopService(playIntent);
         musicService = null;
@@ -96,6 +117,11 @@ public class ListBindingActivity extends AppCompatActivity implements MediaContr
     public void songPicked(SongSelectEvent event) {
         musicService.setSongPosition(event.songId);
         musicService.playSong();
+        if(isPlaybackPaused){
+            setController();
+            isPlaybackPaused = false;
+        }
+        musicController.show();
     }
 
     public ObservableArrayList<Song> getSongList() {
@@ -129,6 +155,7 @@ public class ListBindingActivity extends AppCompatActivity implements MediaContr
         switch (item.getItemId()) {
             case R.id.action_shuffle:
                 //shuffle
+                musicService.setShuffleMode();
                 break;
             case R.id.action_end:
                 stopService(playIntent);
@@ -146,7 +173,8 @@ public class ListBindingActivity extends AppCompatActivity implements MediaContr
 
     @Override
     public void pause() {
-
+        isPlaybackPaused = true;
+        musicService.pausePlayer();
     }
 
     @Override
@@ -156,7 +184,9 @@ public class ListBindingActivity extends AppCompatActivity implements MediaContr
 
     @Override
     public int getCurrentPosition() {
-        return 0;
+        if (musicService != null && isMusicBounded && musicService.isPng())
+            return musicService.getPosn();
+        else return 0;
     }
 
     @Override
@@ -176,21 +206,39 @@ public class ListBindingActivity extends AppCompatActivity implements MediaContr
 
     @Override
     public boolean canPause() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canSeekBackward() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canSeekForward() {
-        return false;
+        return true;
     }
 
     @Override
     public int getAudioSessionId() {
         return 0;
+    }
+
+    private void playNext(){
+        musicService.playNext();
+        if(isPlaybackPaused){
+            setController();
+            isPlaybackPaused=false;
+        }
+        musicController.show(0);
+    }
+
+    private void playPrev(){
+        musicService.playPrev();
+        if(isPlaybackPaused){
+            setController();
+            isPlaybackPaused=false;
+        }
+        musicController.show(0);
     }
 }

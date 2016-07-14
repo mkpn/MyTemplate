@@ -24,23 +24,15 @@ public class VisibilityObservableListBindingActivity extends AppCompatActivity {
         final ObservableArrayList<String> stringList = new ObservableArrayList<>();
         binding.setStringList(stringList);
 
-        binding.addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int i = 0; i < 10; i++) {
-                    Item item = new Item();
-                    item.string.set(String.valueOf(i));
-                    stringList.add(String.valueOf(i));
-                }
+        binding.addButton.setOnClickListener(v -> {
+            for (int i = 0; i < 10; i++) {
+                Item item = new Item();
+                item.string.set(String.valueOf(i));
+                stringList.add(String.valueOf(i));
             }
         });
 
-        binding.deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stringList.clear();
-            }
-        });
+        binding.deleteButton.setOnClickListener(v -> stringList.clear());
     }
 
     @BindingAdapter("stringList")

@@ -17,6 +17,7 @@ import com.template.entity.Song;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by yoshida_makoto on 16/07/12.
@@ -30,6 +31,9 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private ArrayList<Song> songs;
     //current position
     private int songPosition;
+
+    private boolean isShuffleMode = false;
+    private Random rand;
 
     private final IBinder musicBinder = new MusicBinder();
 
@@ -49,8 +53,13 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     @Override
     public void onCreate() {
         super.onCreate();
+        rand = new Random();
         songPosition = 0;
         initMusicPlayer();
+    }
+
+    public void setShuffleMode() {
+        isShuffleMode = !isShuffleMode;
     }
 
     public void initMusicPlayer() {
@@ -62,12 +71,31 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         player.setOnErrorListener(this);
     }
 
+    public void playNext() {
+        if (isShuffleMode) {
+            int newSong = songPosition;
+            while (newSong == songPosition) {
+                newSong = rand.nextInt(songs.size());
+            }
+            songPosition = newSong;
+        } else {
+            songPosition++;
+            if (songPosition >= songs.size()) songPosition = 0;
+        }
+        playSong();
+    }
+
     @Override
     public void onCompletion(final MediaPlayer mp) {
+        if (player.getCurrentPosition() > 0) {
+            mp.reset();
+            playNext();
+        }
     }
 
     @Override
     public boolean onError(final MediaPlayer mp, final int what, final int extra) {
+        mp.reset();
         return false;
     }
 
@@ -99,6 +127,12 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         }
 
         player.prepareAsync();
+    }
+
+    public void playPrev() {
+        songPosition--;
+        if (songPosition >= 0) songPosition = songs.size() - 1;
+        playSong();
     }
 
     public int getPosn() {
