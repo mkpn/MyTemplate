@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.template.R;
-import com.template.databinding.ObservableStringListItemBinding;
+import com.template.databinding.SongListItemBinding;
 import com.template.entity.Song;
 import com.template.event.SongSelectEvent;
 
@@ -20,7 +20,7 @@ public class ObservableSongListAdapter extends RecyclerView.Adapter<ObservableSo
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.observable_string_list_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_list_item, parent, false);
         return new ItemViewHolder(v);
     }
 
@@ -30,7 +30,7 @@ public class ObservableSongListAdapter extends RecyclerView.Adapter<ObservableSo
         holder.getBinding().setSong(song);
         holder.getBinding().executePendingBindings();
         holder.getBinding().getRoot().setOnClickListener(v -> {
-            org.greenrobot.eventbus.EventBus.getDefault().post(new SongSelectEvent((int) song.getId()));
+            org.greenrobot.eventbus.EventBus.getDefault().post(new SongSelectEvent((position)));
         });
     }
 
@@ -44,14 +44,14 @@ public class ObservableSongListAdapter extends RecyclerView.Adapter<ObservableSo
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
-        private ObservableStringListItemBinding mBinding;
+        private SongListItemBinding mBinding;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             mBinding = DataBindingUtil.bind(itemView);
         }
 
-        public ObservableStringListItemBinding getBinding() {
+        public SongListItemBinding getBinding() {
             return mBinding;
         }
     }

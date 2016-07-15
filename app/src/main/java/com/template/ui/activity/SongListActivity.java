@@ -12,23 +12,26 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.MediaController;
 
 import com.template.MusicController;
 import com.template.R;
-import com.template.databinding.ActivityListBindingBinding;
+import com.template.databinding.SongListActivityBinding;
 import com.template.entity.Song;
 import com.template.event.SongSelectEvent;
 import com.template.service.MusicService;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Collections;
 
-public class ListBindingActivity extends AppCompatActivity implements MediaController.MediaPlayerControl {
+public class SongListActivity extends AppCompatActivity implements MediaController.MediaPlayerControl {
 
     private MusicController musicController;
 
-    private ActivityListBindingBinding binding;
+    private SongListActivityBinding binding;
 
     private ObservableArrayList<Song> songList;
     private MusicService musicService;
@@ -41,8 +44,7 @@ public class ListBindingActivity extends AppCompatActivity implements MediaContr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_list_binding);
-
+        binding = DataBindingUtil.setContentView(this, R.layout.song_list_activity);
 
         songList = getSongList();
         Collections.sort(songList, (a, b) -> a.getTitle().compareTo(b.getTitle()));
@@ -51,6 +53,7 @@ public class ListBindingActivity extends AppCompatActivity implements MediaContr
         musicConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(final ComponentName name, final IBinder service) {
+                Log.d("デバッグ", "サービスコネクテッド");
                 MusicService.MusicBinder binder = (MusicService.MusicBinder) service;
                 musicService = binder.getService();
                 musicService.setSongs(songList);
@@ -75,10 +78,15 @@ public class ListBindingActivity extends AppCompatActivity implements MediaContr
     protected void onStart() {
         super.onStart();
         if (playIntent == null) {
+            Log.d("デバッグ", "playIntent will create");
             playIntent = new Intent(this, MusicService.class);
+            Log.d("デバッグ", "playIntent is " + playIntent);
+
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
             startService(playIntent);
+            Log.d("デバッグ", "startService is called");
         }
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -100,6 +108,7 @@ public class ListBindingActivity extends AppCompatActivity implements MediaContr
     protected void onStop() {
         musicController.hide();
         super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -115,9 +124,10 @@ public class ListBindingActivity extends AppCompatActivity implements MediaContr
 
     @org.greenrobot.eventbus.Subscribe
     public void songPicked(SongSelectEvent event) {
-        musicService.setSongPosition(event.songId);
+        Log.d("デバッグ", "musicService is " + musicService);
+        musicService.setSongPosition(event.songPosition);
         musicService.playSong();
-        if(isPlaybackPaused){
+        if (isPlaybackPaused) {
             setController();
             isPlaybackPaused = false;
         }
@@ -224,20 +234,20 @@ public class ListBindingActivity extends AppCompatActivity implements MediaContr
         return 0;
     }
 
-    private void playNext(){
+    private void playNext() {
         musicService.playNext();
-        if(isPlaybackPaused){
+        if (isPlaybackPaused) {
             setController();
-            isPlaybackPaused=false;
+            isPlaybackPaused = false;
         }
         musicController.show(0);
     }
 
-    private void playPrev(){
+    private void playPrev() {
         musicService.playPrev();
-        if(isPlaybackPaused){
+        if (isPlaybackPaused) {
             setController();
-            isPlaybackPaused=false;
+            isPlaybackPaused = false;
         }
         musicController.show(0);
     }

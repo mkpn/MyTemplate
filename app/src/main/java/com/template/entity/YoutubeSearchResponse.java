@@ -1,18 +1,14 @@
 package com.template.entity;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.template.BR;
 
 import java.util.List;
 
 /**
  * Created by makoto on 2016/03/08.
  */
-public class YoutubeSearchResponse extends BaseObservable{
+public class YoutubeSearchResponse {
     @Expose
     private String kind;
 
@@ -95,13 +91,11 @@ public class YoutubeSearchResponse extends BaseObservable{
         this.pageInfo = pageInfo;
     }
 
-    @Bindable
     public List<SearchResult> getSearchResults() {
         return searchResults;
     }
 
     public void setSearchResults(List<SearchResult> searchResults) {
         this.searchResults = searchResults;
-        notifyPropertyChanged(BR.searchResults);
     }
 }

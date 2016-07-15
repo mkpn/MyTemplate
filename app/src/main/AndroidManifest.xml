@@ -27,7 +27,9 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.DesignDemo">
 
-        <activity android:name=".ui.activity.MainActivity">
+        <service android:name=".service.MusicService"/>
+
+        <activity android:name=".ui.activity.SongListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -36,20 +38,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ui.activity.ItemDetailActivity"
-            android:parentActivityName=".ui.activity.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activity.MainActivity"/>
-        </activity>
-
-        <activity android:name=".ui.activity.SimpleBindingActivity"/>
-        <activity android:name=".ui.activity.SimpleClickListenerBindingActivity"/>
-        <activity android:name=".ui.activity.ListBindingActivity"/>
-        <activity android:name=".ui.activity.ObservableListBindingActivity"/>
-        <activity android:name=".ui.activity.VisibilityObservableListBindingActivity"/>
-        <activity android:name=".ui.activity.WeatherActivity"/>
         <activity
             android:name=".ui.activity.YouTubeSearchActivity"
             android:launchMode="singleTop">

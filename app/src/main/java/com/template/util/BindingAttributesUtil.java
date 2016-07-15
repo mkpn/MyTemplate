@@ -8,6 +8,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.template.entity.SearchResult;
+import com.template.entity.Song;
+import com.template.ui.adapter.ObservableSongListAdapter;
 import com.template.ui.adapter.YoutubeSearchResultListAdapter;
 
 /**
@@ -26,6 +28,17 @@ public class BindingAttributesUtil {
         if (recyclerView.getAdapter() == null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
             YoutubeSearchResultListAdapter adapter = new YoutubeSearchResultListAdapter(searchResults);
+            recyclerView.setAdapter(adapter);
+            return;
+        }
+        recyclerView.getAdapter().notifyDataSetChanged();
+    }
+
+    @BindingAdapter("songs")
+    public static void setSongs(RecyclerView recyclerView, ObservableArrayList<Song> songs){
+        if(recyclerView.getAdapter() == null){
+            recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
+            ObservableSongListAdapter adapter = new ObservableSongListAdapter(songs);
             recyclerView.setAdapter(adapter);
             return;
         }

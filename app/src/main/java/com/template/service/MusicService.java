@@ -119,6 +119,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         Uri trackUri = ContentUris.withAppendedId(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, currentSongId);
 
+        Log.d("デバッグ", "playsong title is " + playSong.getTitle());
         try {
             player.setDataSource(getApplicationContext(), trackUri);
         } catch (IOException e) {
